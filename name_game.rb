@@ -27,7 +27,6 @@ class NameGame
                   :Vincenza]
   LAST_NAME    = :Dressel
 
-  BATTLE_RECORD    = Struct.new(:win, :loss)
   FIRST_AND_MIDDLE = Struct.new(:first_name, :middle_name)
 
   def initialize
@@ -57,25 +56,24 @@ class NameGame
   end
 
   def standings
-    deserialize
-
-    ap sorted_results
+    ap sort_results(deserialize)
   end
 
   private
 
   def build_results
     results = deserialize
-
-    if results.empty?
-      full_names.each do |full_name|
-        results[full_name] = {:win => 0, :loss => 0}
-      end
-    end
+    initialize_results(results) if results.empty?
     results
   end
 
-  def full_names
+  def initialize_results(results)
+    all_full_names.each do |name|
+      results[name] = {'win' => 0, 'loss' => 0}
+    end
+  end
+
+  def all_full_names
     @all_full_names ||= begin
       all_full_names = []
       FIRST_NAMES.each do |first_name|
@@ -92,6 +90,10 @@ class NameGame
     @results[loser]['loss'] += 1
   end
 
+  def random_name
+    full_name(FIRST_AND_MIDDLE.new(randomize_first_name, randomize_middle_name))
+  end
+
   def randomize_first_name
     FIRST_NAMES.sample
   end
@@ -101,9 +103,7 @@ class NameGame
   end
 
   def next_pair
-    name1 = FIRST_AND_MIDDLE.new(randomize_first_name, randomize_middle_name)
-    name2 = FIRST_AND_MIDDLE.new(randomize_first_name, randomize_middle_name)
-    [full_name(name1), full_name(name2)]
+    [random_name, random_name]
   end
 
   def full_name(name)
@@ -116,10 +116,6 @@ class NameGame
     end
   end
 
-  def sorted_results
-    @results.sort_by { |key,record| record['loss'] - record['win'] }
-  end
-
   def deserialize
     results = {}
     if File.exists?(FILE_NAME)
@@ -128,6 +124,10 @@ class NameGame
       end
     end
     results
+  end
+
+  def sort_results(results)
+    results.sort_by { |key,record| record['loss'] - record['win'] }
   end
 
 end
