@@ -62,15 +62,15 @@ class NameGame
   private
 
   def build_results
-    results = deserialize
-    initialize_results(results) if results.empty?
-    results
+    deserialize || initialize_results
   end
 
-  def initialize_results(results)
+  def initialize_results
+    results = {}
     all_full_names.each do |name|
       results[name] = {'win' => 0, 'loss' => 0}
     end
+    results
   end
 
   def all_full_names
@@ -117,7 +117,7 @@ class NameGame
   end
 
   def deserialize
-    results = {}
+    results = nil
     if File.exists?(FILE_NAME)
       File.open(FILE_NAME, 'r') do |f|
         results = JSON.load(f.read)
@@ -129,19 +129,27 @@ class NameGame
   def sort_results(results)
     results.sort_by { |key,record| record['loss'] - record['win'] }
   end
+end
+
+class Main
+
+  def self.run
+    puts '(1) Battle or (2) see the standings?'
+
+    name_game = NameGame.new
+
+    mode = gets.chomp.to_i
+    case mode
+    when 1
+      name_game.battle
+    when 2
+      name_game.standings
+    else
+      puts "I did not understand your selection: #{mode}"
+    end
+  end
 
 end
 
-puts '(1) Battle or (2) see the standings?'
+Main.run
 
-name_game = NameGame.new
-
-mode = gets.chomp.to_i
-case mode
-when 1
-  name_game.battle
-when 2
-  name_game.standings
-else
-  puts "I did not understand your selection: #{mode}"
-end
