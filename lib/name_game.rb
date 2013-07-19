@@ -151,5 +151,3 @@ class Main
 
 end
 
-Main.run
-
