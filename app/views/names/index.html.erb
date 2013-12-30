@@ -1,0 +1,31 @@
+<h1>Listing names</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Is first name</th>
+      <th>Is middle name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @names.each do |name| %>
+      <tr>
+        <td><%= name.name %></td>
+        <td><%= name.is_first_name %></td>
+        <td><%= name.is_middle_name %></td>
+        <td><%= link_to 'Show', name %></td>
+        <td><%= link_to 'Edit', edit_name_path(name) %></td>
+        <td><%= link_to 'Destroy', name, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Name', new_name_path %>

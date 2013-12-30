@@ -1,11 +1,4 @@
-require File.join(File.dirname(__FILE__), 'application')
+# This file is used by Rack-based servers to start the application.
 
-set :run, false
-set :environment, :production
-
-FileUtils.mkdir_p 'log' unless File.exists?('log')
-log = File.new("log/sinatra.log", "a+")
-$stdout.reopen(log)
-$stderr.reopen(log)
-
-run Sinatra::Application
+require ::File.expand_path('../config/environment',  __FILE__)
+run Rails.application

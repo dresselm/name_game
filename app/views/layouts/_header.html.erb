@@ -1,0 +1,9 @@
+<header id='page_header' role='banner'>
+  <nav id='utility'>
+    <p>
+      <%= @current_user.email_address %>
+      <%= link_to 'logout', '#' %>
+    </p>
+  </nav>
+  <%= link_to 'NameGame', root_url, title: 'NameGame', id: 'logo' %>
+</header>

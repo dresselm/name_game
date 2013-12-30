@@ -1,0 +1,29 @@
+<h1>Listing standings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Contestant</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @standings.each do |standing| %>
+      <tr>
+        <td><%= standing.user_id %></td>
+        <td><%= standing.contestant_id %></td>
+        <td><%= link_to 'Show', standing %></td>
+        <td><%= link_to 'Edit', edit_standing_path(standing) %></td>
+        <td><%= link_to 'Destroy', standing, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Standing', new_standing_path %>

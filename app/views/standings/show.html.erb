@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @standing.user_id %>
+</p>
+
+<p>
+  <strong>Contestant:</strong>
+  <%= @standing.contestant_id %>
+</p>
+
+<%= link_to 'Edit', edit_standing_path(@standing) %> |
+<%= link_to 'Back', standings_path %>
