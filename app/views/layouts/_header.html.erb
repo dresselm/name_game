@@ -1,7 +1,7 @@
 <header id='page_header' role='banner'>
   <nav id='utility'>
     <p>
-      <%= @current_user.email_address %>
+      <%= @current_user.try(:email_address) %>
       <%= link_to 'logout', '#' %>
     </p>
   </nav>
