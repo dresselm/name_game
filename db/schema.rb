@@ -14,24 +14,27 @@
 ActiveRecord::Schema.define(version: 20131230041759) do
 
   create_table "contestants", force: true do |t|
-    t.integer  "first_name_id"
-    t.integer  "middle_name_id"
+    t.integer  "first_name_id",  null: false
+    t.integer  "middle_name_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "contestants", ["first_name_id", "middle_name_id"], name: "index_contestants_on_first_name_id_and_middle_name_id", unique: true
 
-  create_table "games", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "winning_contestant_id"
-    t.integer  "losing_contestant_id"
+  create_table "match_results", force: true do |t|
+    t.integer "winning_contestant_id", null: false
+    t.integer "losing_contestant_id",  null: false
+  end
+
+  create_table "match_results_users", id: false, force: true do |t|
+    t.integer  "user_id",          null: false
+    t.integer  "match_results_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "names", force: true do |t|
-    t.integer  "user_id"
     t.string   "name"
     t.boolean  "is_first_name"
     t.boolean  "is_middle_name"
@@ -39,7 +42,15 @@ ActiveRecord::Schema.define(version: 20131230041759) do
     t.datetime "updated_at"
   end
 
-  add_index "names", ["user_id", "name"], name: "index_names_on_user_id_and_name", unique: true
+  add_index "names", ["name", "is_first_name", "is_middle_name"], name: "index_names_on_name_and_is_first_name_and_is_middle_name", unique: true
+
+  create_table "names_users", id: false, force: true do |t|
+    t.integer "name_id", null: false
+    t.integer "user_id", null: false
+  end
+
+  add_index "names_users", ["name_id"], name: "index_names_users_on_name_id"
+  add_index "names_users", ["user_id"], name: "index_names_users_on_user_id"
 
   create_table "standings", force: true do |t|
     t.integer  "user_id"
